@@ -1,4 +1,4 @@
-const cards = [
+const cardsData = [
     {id: 1, name:'clubs_10', image:"clubs_10.png"},
     {id: 2, name:'clubs_2', image:"clubs_2.png"},
     {id: 3, name:'clubs_3', image:"clubs_3.png"},
@@ -53,4 +53,4 @@ const cards = [
     {id: 52, name:'spades_10', image:"spades_Q.png"},
 ];
 
-export default cards
+export default cardsData;

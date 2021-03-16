@@ -2,36 +2,37 @@ import React, { useState } from 'react';
 
 import Card from "../cards";
 
-import cards from "../../cards";
+import cardsData from "../../cards";
 import './app.css'
 
 const App = () => {
 
-    const [openCard, setOpenCard] = useState([]);
     const newCards = [];
 
     const shuffle = () => {
-        cards.sort(() => Math.random() - 0.5);
+        cardsData.sort(() => Math.random() - 0.5);
         for(let i = 0; i < 6; i++) {
-            newCards.push(cards[i], cards[i]);
+            newCards.push(cardsData[i], cardsData[i]);
         }
         return newCards.sort(() => Math.random() - 0.5);
     }
 
-    const onClickCard = (index, cards) => {
-        setOpenCard((opened) => [...opened, index])
-        console.log(openCard)
+    shuffle();
+    const [cards] = useState(newCards);
+
+    const [openCards, setOpen] = useState([]);
+
+    const onClickCard = (index) => {
+        setOpen((opened) => [...opened, index])
     }
 
-    shuffle();
 
         return (
             <div className='container' >
                 <div className='cards'>
-                {newCards.map((elem,index) => {
+                {cards.map((elem,index) => {
                     let flipCard;
-                    flipCard = openCard.includes(index);
-
+                    flipCard = openCards.includes(index);
                  return <Card cards={elem} index={index} flipCard={flipCard} onClickCard={onClickCard} key={index}/>
                 })
                 }
