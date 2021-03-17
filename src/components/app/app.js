@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Card from "../cards";
 
@@ -19,13 +19,24 @@ const App = () => {
 
     shuffle();
     const [cards] = useState(newCards);
-
     const [openCards, setOpen] = useState([]);
+    const [matched, setMatched] = useState([]);
 
     const onClickCard = (index) => {
         setOpen((opened) => [...opened, index])
     }
 
+    useEffect(() => {
+        const firstMach = cards[openCards[0]];
+        const secondMach = cards[openCards[1]];
+
+        if (secondMach && firstMach.id === secondMach.id) {
+            setMatched(() => [...matched, firstMach.id]);
+        }
+
+        if (openCards.length === 2) setTimeout(() => setOpen([]), 1000);
+
+    }, [cards, matched, openCards]);
 
         return (
             <div className='container' >
@@ -33,6 +44,7 @@ const App = () => {
                 {cards.map((elem,index) => {
                     let flipCard;
                     flipCard = openCards.includes(index);
+                    if (matched.includes(elem.id)) flipCard = true;
                  return <Card cards={elem} index={index} flipCard={flipCard} onClickCard={onClickCard} key={index}/>
                 })
                 }
