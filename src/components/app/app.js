@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 
 import Card from "../cards";
+import ButtonGame from "../button-game";
 
 import cardsData from "../../cards";
 import './app.css'
@@ -11,23 +12,34 @@ const App = () => {
     const [matched, setMatched] = useState([]);
     let [counterMistakes, setCounterMistakes] = useState(0)
     let [counterSuccessful, setCounterSuccessful] = useState(0);
+    const [cards, setCards] = useState([]);
 
-    const newCards = [];
+    let newCards = [];
 
     const shuffle = () => {
         cardsData.sort(() => Math.random() - 0.5);
         for(let i = 0; i < 6; i++) {
             newCards.push(cardsData[i], cardsData[i]);
         }
-        return newCards.sort(() => Math.random() - 0.5);
+        newCards.sort(() => Math.random() - 0.5);
+        setCards([...newCards]);
     }
 
-    shuffle();
 
-    const [cards] = useState(newCards);
+    const startGame = () => {
+        shuffle();
+        cards.map((elem, index) => {
+            setOpen((elem) => {
+                return [...elem, index];
+            });
+        });
+        setTimeout(() => setOpen([]), 3000);
+        setCounterMistakes(counterMistakes - 1);
+    };
+
 
     const onCardClick = (index) => {
-        setOpen((opened) => [...opened, index])
+        setOpen((opened ) => [...opened, index])
     };
 
 
@@ -39,16 +51,20 @@ const App = () => {
             setMatched(() => [...matched, firstMach.id]);
             setCounterSuccessful(counterSuccessful + 1);
         }
+        if (secondMach && firstMach.id !== secondMach.id) {
+            setCounterMistakes(counterMistakes + 1);
+        }
 
         if (openCards.length === 2) setTimeout(() => setOpen([]), 1000);
-        if (openCards.length === 2) setCounterMistakes(counterMistakes + 1);
 
     }, [openCards]);
+
 
         return (
             <div className='container' >
                 <div className='statistics'>
                     <span className='counter'>Guessed pairs of card:{counterSuccessful}</span>
+                    <ButtonGame startGame={startGame}/>
                     <span className='counter-mistakes'>Counter mistakes:{counterMistakes}</span>
                 </div>
                 <div className='cards'>
@@ -62,7 +78,7 @@ const App = () => {
                               onCardClick={onCardClick}
                               key={index}/>
                 })
-                };
+                }
                 </div>
             </div>
         );
