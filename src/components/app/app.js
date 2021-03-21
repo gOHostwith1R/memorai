@@ -3,18 +3,20 @@ import React, { useState, useEffect} from 'react';
 import Card from "../cards";
 import ButtonGame from "../button-game";
 import ComponentWin from "../component-win";
+import ComponentLose from "../component-lose";
 
 import cardsData from "../../cards";
 import './app.css'
 
 const App = () => {
 
-    const [openCards, setOpen] = useState([]);
+    let [openCards, setOpen] = useState([]);
     let [matched, setMatched] = useState([]);
     let [counterMistakes, setCounterMistakes] = useState(0)
     let [counterSuccessful, setCounterSuccessful] = useState(0);
     let [cards, setCards] = useState([]);
-    let [visibility, setVisibility] = useState(false);
+    let [visibilityWin, setVisibilityWin] = useState(false);
+    let [visibilityLose, setVisibilityLose] = useState(false);
 
     let newCards = [];
 
@@ -36,10 +38,11 @@ const App = () => {
             });
         });
         setTimeout(() => setOpen([]), 3000);
-        setCounterMistakes(counterMistakes - 1);
+        setCounterMistakes(counterMistakes = 0);
         setCounterSuccessful(counterSuccessful = 0);
         setMatched(matched = []);
-        setVisibility(visibility = false)
+        setVisibilityWin(visibilityWin = false);
+        setVisibilityLose(visibilityLose = false);
     };
 
 
@@ -67,9 +70,15 @@ const App = () => {
 
     useEffect(() => {
        if(counterSuccessful === 6) {
-           setVisibility(!visibility);
+           setVisibilityWin(!visibilityWin);
        }
     }, [matched]);
+
+    useEffect(() => {
+        if(counterMistakes === 10) {
+            setVisibilityLose(!visibilityLose);
+        }
+    }, [counterMistakes]);
 
 
         return (
@@ -79,7 +88,8 @@ const App = () => {
                     <ButtonGame startGame={startGame}/>
                     <span className='counter-mistakes'>Counter mistakes:{counterMistakes}</span>
                 </div>
-                <ComponentWin visibility = {visibility}/>
+                <ComponentWin visibility = {visibilityWin}/>
+                <ComponentLose visibility = {visibilityLose}/>
                 <div className='cards'>
                 {cards.map((elem,index) => {
                     let flipCard;
