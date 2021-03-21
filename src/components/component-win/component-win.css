@@ -1,0 +1,11 @@
+.component-win {
+    position: absolute;
+    z-index: 1;
+    font-size: 2.95em;
+    margin-top: 5em;
+    display: none;
+}
+
+.visibility {
+    display: block;
+}
