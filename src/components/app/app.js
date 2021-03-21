@@ -12,7 +12,7 @@ const App = () => {
     const [matched, setMatched] = useState([]);
     let [counterMistakes, setCounterMistakes] = useState(0)
     let [counterSuccessful, setCounterSuccessful] = useState(0);
-    const [cards, setCards] = useState([]);
+    let [cards, setCards] = useState([]);
 
     let newCards = [];
 
@@ -22,14 +22,14 @@ const App = () => {
             newCards.push(cardsData[i], cardsData[i]);
         }
         newCards.sort(() => Math.random() - 0.5);
-        setCards([...newCards]);
+        setCards(cards = [...newCards]);
     }
 
 
     const startGame = () => {
         shuffle();
         cards.map((elem, index) => {
-            setOpen((elem) => {
+            return setOpen((elem) => {
                 return [...elem, index];
             });
         });
@@ -39,7 +39,7 @@ const App = () => {
 
 
     const onCardClick = (index) => {
-        setOpen((opened ) => [...opened, index])
+        setOpen((opened ) => [...opened, index]);
     };
 
 
